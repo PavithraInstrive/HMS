@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  title: HMS
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+components:
+  schemas:
+      User:
+        type: object
+        parameters:
+          _id:
+            type: string
+            example: "613b6f7e9a0f2b2a2c5f9c1d"
+          name:
+            type: string
+            example: "Pavithra Duraisamy"
+          email:
+            type: string
+            example: "pavithra@gmail.com"
+          role:
+            type: string
+            example: "Doctor"
+          password:
+            type: string
+            example: "pavithra@123"
+          dialCode:
+            type: string
+            example: "+91"
+          phoneNumber:
+            type: string
+            example: "9672967596"
+          country:
+            type: string
+            example: "IND"
+          timeZone:
+            type: string
+            example: "Asia/Tokyo"
+          doctorDetails:
+            type: object
+            properties:
+              specialization:
+                type: string
+                example: "E&D"
+              experience:
+                type: number
+                example: 5
+              licenseNumber:
+                type: string
+                example: "12345"
+          patientDetails:
+            type: object
+            properties:
+              gender:
+                type: string
+                example: "male"
+              age:
+                type: number
+                example: 26
+              bloodGroup:
+                type: string
+                example: "O+ve"
+              medicalHistory:
+                type: array
+                items:
+                  type: string
+                  example: "fever"
+
+paths:
+  /user/signUp:
+    post:
+      tags:
+        - Users
+      summary: "Create a user"
+      description: "User SignUp"
+      produces:
+        - application/json
+      parameters:
+            - name: body
+              in: body
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Pavithra Duraisamy"
+                email:
+                  type: string
+                  example: "pavithra@gmail.com"
+                role:
+                  type: string
+                  example: "Doctor"
+                password:
+                  type: string
+                  example: "pavithra@123"
+                dialCode:
+                  type: string
+                  example: "+91"
+                phoneNumber:
+                  type: string
+                  example: "9672967596"
+                country:
+                  type: string
+                  example: "IND"
+                timeZone:
+                  type: string
+                  example: "Asia/Tokyo"
+                doctorDetails:
+                  type: object
+                  properties:
+                    specialization:
+                      type: string
+                      example: "E&D"
+                    experience:
+                      type: string
+                      example: "5 years"
+                    licenseNumber:
+                      type: string
+                      example: "123456"
+                patientDetails:
+                      type: object
+                      properties:
+                        gender:
+                          type: string
+                          example: "male"
+                        age:
+                          type: number
+                          example: 26
+                        bloodGroup:
+                          type: string
+                          example: "O+ve"
+                        medicalHistory:
+                          type: array
+                          items:
+                            type: string
+                            example: "fever"
+
+      responses:
+        '200':
+          description: User SignUp successful
+        '400':
+          description: Bad request
+        '409':
+          description: Email already exists
+
+  /user/login:
+    post:
+      tags:
+        - Users
+      summary: signIn
+      produces:
+        - application/json
+      parameters:
+          - name: body
+            in: body
+            type: object
+            properties:
+              email:
+                type: string
+                example: "pavithra@gmail.com"
+              password:
+                type: string
+                example: "pavithra@123"
+
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Sign In Successfully
+                  accessToken:
+                    type: string
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+                  refreshToken:
+                    type: string
+                    example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'
+        '400':
+          description: Bad request - User not found or Incorrect credential
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found.
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Server error
+  
+  /user/getDoctors:
+    get:
+      tags:
+        - Users
+      summary: Doctor List
+      parameters:
+        - name: role
+          in: query
+          schema:
+            type: string
+          example: Doctor
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+        - name: limit
+          in: query
+          schema:
+            type: integer
+          example: '10'
+      responses:
+        '200':
+          description: Successful response
+          
+        '400':
+          description: Bad request - Invalid query parameters
+      
+        '500':
+          description: Internal Server Error
+
+definitions:
+  LatestResponse:
+    type: object
+    properties:
+      role:
+        type: string
+      
+    required:
+    - role
+    
+
+  
