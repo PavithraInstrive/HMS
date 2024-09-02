@@ -70,7 +70,7 @@ app.get('/', (req, res) => {
 
 
 
-const appointmentDocument = YAML.load('./api/HMS/swagger.yaml');
+const appointmentDocument = YAML.load('./api/Appointment/swagger.yaml');
 const userDocument = YAML.load('./api/User/swagger.yaml');
 
 const combinedSwaggerDocument = {
